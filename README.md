@@ -34,6 +34,7 @@ Workshops, slides, and demos from attending [VueConf US](http://vueconf.us) in T
 
 * Chris Fritz - Vue 3: What I'm Most Excited About
   * [Slides](https://github.com/chrisvfritz/vue-3-trends/blob/master/slides-2019-03-vueconfus.pdf)
+  * [Repo](github.com/vuejs/rfcs)
 * Guillaume Chau - 9 Performance Secrets Revealed
   * [Slides](https://slides.com/akryum/vueconfus-2019#/)
   * [Repo](https://github.com/Akryum/vue-9-perf-secrets)

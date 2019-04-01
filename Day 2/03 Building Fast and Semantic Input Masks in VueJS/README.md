@@ -2,57 +2,65 @@
 
 ## Building Fast and Semantic Input Masks in VueJS
 
-JAM - javascript api markup - Nullify
+- JAM - javascript api markup - Netlify
 - input masks are a good pattern to improve UX
-- input events
-  - requirements
-    - allow only numbers
-    - add format for dollar and cents
-  - capturing key events
-    - @input
-      - v-model (is just an @input and a value could be used instead)
-      ```javascript
-      methods: {
-        formatCashMoney() {
-          var key = e,key
-          // regex
-          ...
-          // decimalize string and separate by 1000s
-          this.formattedCashMoney = wearMask(e.target.value)
-        }
-      }
-      ```
-  - event listeners propogate
-    - keydown -> keypress -> input -> keyup
-      - to get character code need to go to keydown
-      - @keydown instead of @input
-    - still not quite working
-      - go back to input to also make sure validate works      
-        ```javascript
-        @keydown="validateInput"
-        @input="formatINput"
-        ```
-- the role of reactivity
-  - computed properties
+- requirements
+  - allow only numbers
+  - add format for dollar and cents
+- capturing key events
+  - @input
+    - v-model is just an @input and a value could be used instead
+
     ```javascript
-    :value="formattedCashMoney"
-    ...
-    computed: {
-      formattedCashMoney() {
-        return wearMask(this.unformmated)
+    methods: {
+      formatCashMoney() {
+        var key = e,key
+        // regex
+        [...]
+        // decimalize string and separate by 1000s
+        this.formattedCashMoney = wearMask(e.target.value)
       }
     }
-    // move computted to be getter and setter and just use vmodel
+    ```
+
+- event listeners propogate
+  - keydown -> keypress -> input -> keyup
+    - to get character code need to go to keydown
+    - @keydown instead of @input
+  - still not quite working
+    - go back to input to also make sure validate works
+
+      ```javascript
+      @keydown="validateInput"
+      @input="formatINput"
+      ```
+
+- the role of reactivity
+  - computed properties
+
+    ```javascript
+    :value="formattedCashMoney"
+    [...]
     computed: {
       formattedCashMoney() {
-        get() { return this .formatted }
+        return wearMask(this.unformatted)
+      }
+    }
+    // move computed to be getter and setter and just use v-model
+    computed: {
+      formattedCashMoney() {
+        get() {
+          return this.formatted
+        }
         set(value) {
-          ...   
+          [...]
         }
       }
     }
     ```
+
 - reusable component patterns
+
   ```javascript
   <v-mask
     v-slot:default="{ formattedValue, input, keydown }"
@@ -61,15 +69,17 @@ JAM - javascript api markup - Nullify
       <input
         type="text"
         :value="formattedValue"
-        v-on="listeners" // automatically bind child listenrs to the slot
+        v-on="listeners" // automatically bind child listeners to the slot
       />
     </label>
   </v-mask>
   ```
-  - can use v-mask directive for format strings to pass down 
-    - `v-mask="'(###)###-###'"
+
+  - can use v-mask directive for format strings to pass down
+    - `v-mask="'(###)###-###'"`
     - Sarah Drasner wrote a good post on how to use directives
     - bind (first inserted), componentUpdated
+
     ```javascript
     directives: {
       mask: {
@@ -84,25 +94,28 @@ JAM - javascript api markup - Nullify
       }
     }
     ```
+
   - hooks (compositional functions)
     - allows us to encapsulate state without having any presentational logic within it
-    - vue-hooks repo 
+    - vue-hooks repo
       - computed properties are not reactive in vue hooks
-      - This pattern probably shouldn't be used below but it worke for her demo
+      - this pattern probably shouldn't be used below but it works for demo
+
       ```javascript
-      const computed = cuseComputed(() => {
+      const computed = useComputed(() => {
         return {
           formatted: {
             get() {
               return data.unformatted;
             }
             set(e) {
-              ...
+              [...]
             }
           }
         }
       }
       ```
+
     - Advanced Reactivity API #22 talks more about the way to do this (and not using the hooks experimental way above?)
 - Important to remember on what to do, focus on:
   - usability

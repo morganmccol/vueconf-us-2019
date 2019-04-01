@@ -7,7 +7,7 @@ View [code](https://github.com/Akryum/vue-9-perf-secrets).
 
 - Currently can change template to template functional and value to props.value on the v-if
   - 2x faster
-  - Less time creating components in javasscript
+  - Less time creating components in javascript
 - Child component splitting
   - If child component doesn't depend on the data of the parent component (otherwise will still update)
   - Another 2x faster
@@ -16,7 +16,7 @@ View [code](https://github.com/Akryum/vue-9-perf-secrets).
   - local variable points to computed variable
     - `const base = this.base`
     - 3x faster
-      - First case you access reactive state of vue (since it might change)
+    - first case you access reactive state of vue (since it might change)
 - Reuse DOM with v-show
   - instead of v-if v-else use v-show
     - 3x faster
@@ -29,7 +29,7 @@ View [code](https://github.com/Akryum/vue-9-perf-secrets).
   - Improves user experience, but performance hasn't (takes the same amount of time)
   - Defer mixin
     - using a counter
-      - increments when mounted for each frame
+    - increments when mounted for each frame
 - Time slicing
   - split array of items into smaller chunks
   - then commit these over time
@@ -39,18 +39,18 @@ View [code](https://github.com/Akryum/vue-9-perf-secrets).
 - Non-reactive data
   - several ways to do this
     - objectFreeze is one way, but can't change it later
-    - if can't use it then use
-      - object.defineProperty
+    - if can't use it then use `object.defineProperty`
+
       ```javascript
       object.defineProperty(itemData, 'data', {
         configurable: false,
         value: item
       })
       ```
+
     - 7x faster
 - Virtual scrolling
   - vue-tools-scroller
-    - `<recycle-scroller>`
-      - only render visible items
-      - can use regular components and not just function
-- github.com/Akryum/vue-9-per-secrets
+  - `<recycle-scroller>`
+    - only render visible items
+    - can use regular components and not just function
