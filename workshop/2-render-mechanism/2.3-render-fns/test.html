@@ -1,0 +1,20 @@
+<div id="app"></div>
+
+<script type="module">
+import { bootstrap, h, observable } from './code.js'
+
+const state = window.state = observable({
+  msg: 'hello'
+})
+
+function component() {
+  return h('div', { id: 'foo' }, [
+    h('span', null, [state.msg]),
+    h('span', null, ['world'])
+  ])
+}
+
+bootstrap(component, document.getElementById('app'))
+
+state.msg = 'changed'
+</script>

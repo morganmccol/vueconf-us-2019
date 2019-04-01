@@ -1,0 +1,51 @@
+<div id="app">
+  Mouse position: x {{ mouse.x }} / y {{ mouse.y }}
+</div>
+
+<script src="https://unpkg.com/vue"></script>
+<script type="module">
+function useMousePosition(vm) {
+  const mousePosition = Vue.observable({
+    x: 0,
+    y: 0
+  })
+
+  const update = e => {
+    mousePosition.x = e.pageX
+    mousePosition.y = e.pageY
+  }
+
+  // const foo = computed(() => mousePosition.x + mousePosition.y)
+  // foo.value
+
+  // watch(foo, newFoo => {
+  //  console.log('foo changed')
+  // })
+
+  // onMounted
+  vm.$on('hook:mounted', () => {
+    window.addEventListener('mousemove', update)
+  })
+
+  // onDestroyed
+  vm.$on('hook:destroyed', () => {
+    window.removeEventListener('mousemove', update)
+  })
+
+  // return {
+  //  foo,
+  //  mousePosition
+  // }
+  return mousePosition
+}
+
+new Vue({
+  el: '#app',
+  data() {
+    // const { foo, mousePosition: mouse } = useMousePosition()
+    return {
+      mouse: useMousePosition(this)
+    }
+  }
+})
+</script>

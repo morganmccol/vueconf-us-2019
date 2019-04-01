@@ -1,0 +1,27 @@
+<div id="app"></div>
+
+<script type="module">
+import { h, mount, patch } from './code.js'
+
+function render(state) {
+  return h('div', { id: 'foo' }, [
+    h('span', null, [state.msg]),
+    h('span', null, ['world'])
+  ])
+}
+
+// app boot up
+const vdom1 = render({
+  msg: 'hello'
+})
+
+mount(vdom1, document.getElementById('app'))
+
+setTimeout(() => {
+  const vdom2 = render({
+    msg: 'bye'
+  })
+
+  patch(vdom1, vdom2)
+}, 1000)
+</script>

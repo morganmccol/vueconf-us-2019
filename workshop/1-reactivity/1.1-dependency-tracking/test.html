@@ -1,0 +1,17 @@
+<p>Count is: <span id="count"></span></p>
+
+<script type="module">
+import { Observable, effect } from './code.js'
+
+const count = new Observable(1)
+
+effect(() => {
+  if (someValue.get()) {
+  document.getElementById('count').textContent = count.get()
+  }
+})
+
+setInterval(() => {
+  count.set(count.get() + 1)
+}, 1000)
+</script>

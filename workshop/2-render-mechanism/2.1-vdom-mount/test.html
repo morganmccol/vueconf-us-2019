@@ -1,0 +1,14 @@
+<div id="app"></div>
+
+<script type="module">
+import { h, mount } from './code.js'
+
+// HTML -> hypertext -> hyperscript
+
+const vdom = h('div', { id: 'foo' }, [
+  h('span', null, ['hello']),
+  h('span', null, ['world'])
+])
+
+mount(vdom, document.getElementById('app'))
+</script>

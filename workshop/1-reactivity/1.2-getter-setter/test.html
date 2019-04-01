@@ -1,0 +1,16 @@
+<div id="count"></div>
+<button onclick="state.count++">++</button>
+
+<script type="module">
+import { observable, effect } from './code.js'
+
+const state = window.state = observable({
+  count: 0
+})
+
+effect(() => {
+  document.getElementById('count').textContent = state.count
+})
+
+state.count++
+</script>

@@ -1,0 +1,47 @@
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+  Mouse position: x {{ x }} / y {{ y }}
+</div>
+
+<script>
+const mousePositionMixin = {
+  data() {
+    return {
+      x: 0,
+      y: 0,
+    }
+  },
+  mounted() {
+    window.addEventListener('mousemove', this.update)
+  },
+  destroyed() {
+    window.removeEventListener('mousemove', this.update)
+  },
+  methods: {
+    update(e) {
+      this.x = e.pageX
+      this.y = e.pageY
+    }
+  }
+}
+
+const plugin = () => {
+  install: Vue => {
+    Vue.mixin({
+      beforeCreate() {
+        if (this.$options.store) {
+          // do something ..
+        }
+      }
+    })
+  }
+}
+
+VUe.use(plugin)
+
+const app = new Vue({
+  el: '#app',
+  mixins: [mousePositionMixin]
+})
+</script>

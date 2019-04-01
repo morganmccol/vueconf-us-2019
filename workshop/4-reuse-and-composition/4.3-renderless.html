@@ -1,0 +1,42 @@
+<script src="https://unpkg.com/vue"></script>
+
+<div id="app">
+  <mouse v-slot="{ x, y }">
+    Mouse position: x {{ x }} / y {{ y }}
+  </mouse>
+</div>
+
+<script>
+h('mouse', ({ x, y }) => [
+  createTextVNode(`Mouse position ...${x}`)
+])
+
+const Mouse = {
+  data() {
+    return {
+      x: 0,
+      y: 0,
+    }
+  },
+  mounted() {
+    window.addEventListener('mousemove', this.update)
+  },
+  destroyed() {
+    window.removeEventListener('mousemove', this.update)
+  },
+  methods: {
+    update(e) {
+      this.x = e.pageX
+      this.y = e.pageY
+    }
+  },
+  template: `<div><slot :x="x" :y="y" /></div>`
+}
+
+const app = new Vue({
+  el: '#app',
+  components: {
+    Mouse
+  }
+})
+</script>
