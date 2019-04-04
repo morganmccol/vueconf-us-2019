@@ -2,122 +2,31 @@
 
 ## Building Fast and Semantic Input Masks in VueJS
 
-- JAM - javascript api markup - Netlify
-- input masks are a good pattern to improve UX
-- requirements
-  - allow only numbers
-  - add format for dollar and cents
-- capturing key events
-  - @input
-    - v-model is just an @input and a value could be used instead
-
-    ```javascript
-    methods: {
-      formatCashMoney() {
-        var key = e,key
-        // regex
-        [...]
-        // decimalize string and separate by 1000s
-        this.formattedCashMoney = wearMask(e.target.value)
-      }
-    }
-    ```
-
-- event listeners propogate
-  - keydown -> keypress -> input -> keyup
-    - to get character code need to go to keydown
-    - @keydown instead of @input
-  - still not quite working
-    - go back to input to also make sure validate works
-
-      ```javascript
-      @keydown="validateInput"
-      @input="formatINput"
-      ```
-
-- the role of reactivity
-  - computed properties
-
-    ```javascript
-    :value="formattedCashMoney"
-    [...]
-    computed: {
-      formattedCashMoney() {
-        return wearMask(this.unformatted)
-      }
-    }
-    // move computed to be getter and setter and just use v-model
-    computed: {
-      formattedCashMoney() {
-        get() {
-          return this.formatted
-        }
-        set(value) {
-          [...]
-        }
-      }
-    }
-    ```
-
-- reusable component patterns
-
-  ```javascript
-  <v-mask
-    v-slot:default="{ formattedValue, input, keydown }"
-  >
-    <label>
-      <input
-        type="text"
-        :value="formattedValue"
-        v-on="listeners" // automatically bind child listeners to the slot
-      />
-    </label>
-  </v-mask>
-  ```
-
-  - can use v-mask directive for format strings to pass down
-    - `v-mask="'(###)###-###'"`
-    - Sarah Drasner wrote a good post on how to use directives
-    - bind (first inserted), componentUpdated
-
-    ```javascript
-    directives: {
-      mask: {
-        bind(el, {value}) { // when directive is first added to a component
-          const mask = value
-          el.value = wearMask(el.target.value, mask);
-        },
-        componentUpdated(el, {value}) { // whenever a user is typing so that we can remove and reapply mask
-          let unformatted = removeMask(el.target.value)
-          el.value = wearMask(unformatted, mask);
-        }
-      }
-    }
-    ```
-
-  - hooks (compositional functions)
-    - allows us to encapsulate state without having any presentational logic within it
-    - vue-hooks repo
-      - computed properties are not reactive in vue hooks
-      - this pattern probably shouldn't be used below but it works for demo
-
-      ```javascript
-      const computed = useComputed(() => {
-        return {
-          formatted: {
-            get() {
-              return data.unformatted;
-            }
-            set(e) {
-              [...]
-            }
-          }
-        }
-      }
-      ```
-
-    - Advanced Reactivity API #22 talks more about the way to do this (and not using the hooks experimental way above?)
-- Important to remember on what to do, focus on:
-  - usability
-  - user experience
-  - developer ergonomics
+* Input Masks are a key pattern for forms to make them readable and allow users to understand what they’re doing
+* Requirements
+  * Allow only numbers
+  * Add format for dollars and cents
+* Input Events
+  * Capturing key events using oninput (vanilla JS) or @input
+  * V-model is @input and :value in a single directive
+  * Browser API to catch key events is e.key
+  * Create regex for is not a number so that event will not propagate
+  * Keydown -> keypress -> input -> keyup
+  * By binding to input, only value numbers not character code for validation
+  * Instead of @input, use @keydown
+  * Keydown happens right before the value gets keyed up
+  * Need keydown for validation, need input for formatting
+  * Each time formatting occurs, must use removeMask to undo formatting
+* The Role of Reactivity
+  * Switch to getter/setter and computed properties
+* Reusable component patterns
+  * Can use scoped slots to grab parts of component
+  * Use v-mask directives to use custom hooks
+  * The ones most people care about are bind/unbind
+  * If input already has a value, masks can apply on load and use updated to reapply as needed
+* Hooks
+  * Experimental
+  * Allow use of v-model
+  * Use value with computed get and input with computed set
+  * Input mask and within hooks, call the hook and extrapolate and use object deconstructing
+  * Can instead use advanced reactivity API

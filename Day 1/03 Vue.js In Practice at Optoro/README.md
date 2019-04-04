@@ -2,17 +2,32 @@
 
 ## Vue.js In Practice at Optoro
 
-- 8 years of total experience, 3 off and on with Vue
-- [Style Guide — Vue.js](https://vuejs.org/v2/style-guide/)
-  - great for onboarding and preventing bikeshedding
-- pave the cowpaths
-  - monorepo, micro-frontends
-  - incrementally adopted vue while maintaining AngularJS apps
-    - small blast radius, small changes when trying to see if can adopt new tech/framework
-  - decouple framework code from application code helps move faster
-  - use vue-cli to improve product consistency
-    - vue-cli-plugins
-    - json file to export the file into a plugin (customize webpack, configure error reporting, importing shared library code)
-    - webpack deps/config, third-party deps, bulky custom scripts, cross-project consistency
-  - sharing code efficiently across teams/projects is hard
-    - don't want to burden team members with complexity, if people complain it's a good way to iterate on improvements on the process
+* Handle product return optimization by reducing waste in the retail industry
+* History of Vue at Oproro
+  * Been in production for two years at blinq.com
+  * Old school javascript with lots of globals and hand-holding
+  * Switched from Angular to Vue due to complexity and burden to development
+  * Used vue incrementally by adding a hook to all elements for components
+    * Added vue in a small, low risk spot to get data
+    * Not business critical features that affected user experience
+  * NPM Scripts are a great way to decouple how the project is built
+* Pave the cowpaths
+  * **Monorepo, micro-frontend**
+  * Projects are fleeting and don’t have to be maintained after release
+  * Enterprise software is different
+  * Migrated away from bower and into npm
+  * Decouple framework from application code so users aren’t forced to upgrade
+  * **Use vue-cli to improve cross-project consistency**
+    * Default presets into json package
+    * Configure error reporting, browserslist
+    * `npx @optoro/create-vue-optics-app name-of-project`
+* Build a @vue/cli plugin
+  * Webpack deps/config
+  * Third-party dependencies
+  * Bulky custom scripts
+  * Cross-project consistency
+* Success
+  * Incremental adoption
+  * Iterative development
+  * **Knowledge sharing: share useful techniques and patterns for an hour each week**
+* Released a new product for their app in 3 weeks

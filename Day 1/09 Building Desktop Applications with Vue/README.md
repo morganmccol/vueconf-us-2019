@@ -4,88 +4,58 @@
 
 View [slides](https://www.slideshare.net/NataliaTepluhina/desktop-apps).
 
-- Senior Frontend Engineer at Gitlab, Google dev expert
-- Why use JS for desktop apps?
-  - Not Electron only
-  - JS is cross platform
-- Electron apps are written with:
-  - HTML, JS, CSS
-  - Chromium browser under the hood
-  - Main process
-    - knows nothing about the DOM
-  - Renderer Process
-    - per window
-    - Has access to chromium and thus the DOM
-  - How to do it with Vue?
-
-    ```bash
-    npm install electron --save-dev
-    ```
-
-    - create main.js file
-    - define url where electron application is running
-    - local host or a folder on production
-    - open a new browser window app.on.ready
-    - npm tasks serve or build
-  - Does Vue-Router work fine?
-    - yes, no problem
-  - Vuex? 
-    - Can have different renderer processes
-    - How to share state between them?
-    - npm has `vuex-electron`
-      - vue-cli -> `vue add electron-builder`
-    - web application will be shown as a desktop app
-  - 130 MB package to make an app
-- NW.js
-  - HTML, JS, CSS, Chromium, Node.js
-  - Main entry point node.js application (url, html file)
-    - Chromium usage
-  - Source Code Protection
-    - to protect binaries
-    - with electron your code won't be obfuscated!
-  - How to use with Vue?
-    - install it with npm
-    - modify package.json (add main entry point)
-      - npm run serve to `./node_modules/bin/run .`
-      - npm install --save-dev nw@sdk
-      - nw .
-    - Looks like electron, no difference
-    - To build need to specify a version nwVersion
-    - Vue-Router and Vuex work right out of the box
-      - built a Vue-CLI plugin
-      - vue add nwjs
-      - nwjs-vue boilderplate (outdated) for more advanced stuff
-  - 230MB package (can be reduced significantly)
-- Vuido
-  - NO HTML + CSS
-    - used for simple interface without need for fancy UI
-  - Powered by Libui-Node
-    - Native specifics for each platform
-    - Windows:
-      - windows-build-tool C++ dev
-    - Linux:
-      - Build essentials
-      - and something else
-    - OS X:
-      - xcode
-  - How to use with Vue?
-    - npm install --global @vue/cli @vue/cli-init
-    - vue init mimecorg/vuido-webpack-template ... boilerplate creation
-    - similar to vue components but these are native components
-    - Vue-router not compatible (because no browser window and url)
-    - Vuex works
-  - **32 MB Package**
-- Surprise!
-  - week and a half ago, chrome 73 released
-  - Desktop PWA (for OSX, previously only linux and windows)
-    - can install web app to mobile phone
-    - can install web applications to desktop
-    - if application is progressive, can install the application
-    - after this the app runs
-    - all functionality built with vue
-      - `vue add pwa`
-  - **516 KB footprint**
-- What to choose?
-  - styles: PWA, NW.JS, Electron
-  - source code protection: NW.JS
-  - no styles, native look: Vuido
+* Why use JS for Desktop applications?
+  * Cross Platform
+* Electron
+  * HTML + CSS + JavaScript
+  * Main Process
+    * One main process
+    * Knows nothing about document object model
+    * Windowless
+  * Renderer Process
+    * For every single window
+    * Access to window and document
+  * How to do it with Vue
+    * Create main file
+    * Update config
+    * Vue-router is fine
+    * Vuex is complicated due to multiple windows
+    * Mentioned vuex-electron
+    * Vue-CLI plugin allows for electron-builder
+      * Creator is 16-year-old
+  * ~130 MB on build
+* NW.JS
+  * HTML + CSS + JavaScript
+  * Works with Chromium and Node
+  * Main Entry Point
+    * HTML file
+  * Chromium Usage
+    * Pulls the whole chromium and is much larger than electron
+  * **Source Code Protection**
+    * Built in protection to obfuscate code on build
+    * Electron does not do this
+  * How to do it with Vue
+    * Modify package.json
+    * Run app
+    * Build app by installing nw and specifying version
+    * Vue-route and Vuex work out of the box
+    * Vue-CLI plugin created by presenter
+  * ~230 MB on build (can be reduced significantly)
+* Vuido
+  * No HTML + CSS
+  * Powered by Libui-Node
+  * Native GUI Components
+  * How to do it with Vue
+    * Webpack-vue boilerplate
+    * Uses native components
+    * No styling AT ALL
+    * Uses launchui-packager
+    * Cannot use vue-router, vuex OK
+  * ~32 MB on build
+* **Desktop PWA**
+  * Chrome 73 supports for MacOS (already on Windows and Linux platforms)
+  * Allows installation of application to mobile and desktop
+  * Can install directly from chrome
+  * Vue-CLI has plugin for PWA
+  * ~516 KB on build
+* Find what serves best for you

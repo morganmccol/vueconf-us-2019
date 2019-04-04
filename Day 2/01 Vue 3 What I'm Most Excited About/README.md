@@ -5,130 +5,44 @@
 View [slides](https://github.com/chrisvfritz/vue-3-trends/blob/master/slides-2019-03-vueconfus.pdf).
 View [code](github.com/vuejs/rfcs).
 
-- @chrisvfritz
-  - written most of the core documentation for Vue with Natalia and Sarah Drasner
-- v2.x to v3.x
-  - Simpler
-    - less code
-    - fewer concepts (less cognitive load)
-    - fewer "foot guns"
-    - minimize opportunities to make mistakes to cause you pain later
-  - Explicit
-    - clear relationships
-    - both components to know about the relationship between them in both of them
-    - expressive code
-- Goodbye reactivity caveats
-
-  ```javascript
-  Vue.set(this.myArray, index, newValue)
-  // add array by index, or new prop to object or delete from object
-  ```
-
-  - we use these methods in v2.x to know that something has changed
-  - in v3.x (as long as no internet explorer)
-
-  ```javascript
-  this.myArrayIndex = newValue
-  this.myObject[key] = value
-  delete this.myObject[key]
-  ```
-
-- Multiple root nodes
-
-  ```javascript
-  <template>
-    <div></div>
-    <div></div>
-  </template>
-  // component template should contain exactly one root element
-  
-  // in v3.x
-  // this will be okay (can use multiple root nodes and opens up more patterns that weren't available before)
-  ```
-
-- Breaking News
-  - Simpler transparent wrappers
-
-  ```javascript
-  <BaseInput
-    v-model="searchText"
-    placeholder="Search"
-    @keyup.enter="search'
-  </>
-  ...
-  ```
-
-  - .data attribute will be removed in v3.x and considered an anti-pattern
-  - Lots of boiler plate code to use this above
-
-  ```javascript
-  <script>
-  export default {
-    props ['label']
-  }
-  </script>
-  ...
-  <input v-bind="$attrs" />
-  ```
-
-  - no more automatic attribute inheritance
-    - need to be explicit with v-blind="$attrs"
-      - prevents bugs from change root attrs
-        - all attributes not defined as props on a component
-        - never need inherit = false
-    - v-on will compile to attributes (e.g. @keyup compiles to on-keyup)
-      - v-bind="$attrs"
-        - ($attrs includes all non-emitted listeners)
-        - no more $listeners
-        - no more .native modifier for v-on
-    - v-model will compile to attributes (model-value and on-model-update)
-      - v-bind="$attrs"
-        - no more overriding the native input event
-        - no more model option (probably)
-      - v-model on an element just works
-        - handles isIE9, isIE, isEdge weirdness for you (similar to Angular and React)
-          - also quarks with IOS, android and other browsers
-    - Smarter v-model on a component in Vue 3:
-
-      ```javascript
-      <template>
-        <select v-bind="$attrs">
-          <option disabled />
-          <option v-for="choice in choices">
-            {{ choice }}
-          </option>
-        </select>
-      </template>
-      ```
-
-- Simpler render functions
-  - JSX for simple cases is pretty readable
-  - If not using JSX the render function gets pretty complex
-    - in v3.x this is now simpler
-
-      ```javascript
-      render(h) {
-        return h(BaseInput, {
-          modelValue: this.searchText,
-          onModelUpdate: newValue => {
-             this.searchText = newValue
-            },
-            class: this.$style.searchInput,
-            placeholder: ..
-          }
-        })
-      }
-      ```
-
-- If I'm not already using Vue, should I wait for Vue 3?
-  - Vue 2 still has the easiest learning curve out of all the frameworks
-- Vue 3 supports IE
-  - But will have the same reactivity caveats of Vue 2
-- Will Vue 3 break everything?
-  - No
-  - There wil be a next-gen migration helper and a migration guide to move to Vue 3
-  - Hoping it will take 5 minutes to migrate instead of 5 hours
-  - Offers to automatically migrate
-- Backporting as many features as possible
-  - like new slot syntax
-  - already getting Vue 3 goodness in Vue 2
+* Written most of the core documentation in Vue
+* How will code we write today simplify and become more explicit as we migrate
+  * Simpler
+    * Less code
+    * Fewer concepts
+    * Fewer foot guns
+      * Want to minimize the number of cases to accidentally make a mistake that will cause pain later
+      * Happy and more maintainable apps
+  * Explicit
+    * Clear relationships
+    * Expressive code
+* Trends in Vue 3
+  * Goodbye reactivity caveats
+  * Vue.set and vue.delete
+    * Allows us to set an item to an array, add a property to an object, or delete a property from an object
+    * Vue 2 is not smart enough to detect changes without these methods
+    * Otherwise, component won’t re-render, computed property won’t re-compute
+    * In Vue 3, can use normal javascript for these cases
+    * Multiple root nodes
+      * Supported in Vue 3
+      * Opens up opportunities for more patterns that were previously unavailable
+* New changes
+  * **Simpler transparent wrappers**
+    * A common pattern where you have a base input component that you want to work with v-model, add attributes with input elements, and add listeners that work on normal input elements
+    * Idea of transparent wrapper component is that base input component works exactly as normal input element
+    * **Native modifier is considered an anti pattern and will be removed in Vue 3**
+    * No more automatic attribute inheritance
+      * Just v-bind=“$attrs”
+      * $attrs includes all non-prop attributes
+    * V-on will compile to attributes
+      * @keyup compiles to on-keyup
+    * V-model will compile to attributes
+      * No more overriding the native input event
+* Simpler render functions
+  * V-model compiles to modelValue and onModelUpdate
+* Moving to Vue 3
+  * Will it break everything
+    * No
+    * Use the migration guide or migration helper
+  * What if I’m stuck with Vue 2
+    * **Backporting as many features as possible**
